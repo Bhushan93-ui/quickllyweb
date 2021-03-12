@@ -22,10 +22,13 @@ import org.testng.TestListenerAdapter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import com.quicklly.ScreenshortListner.ScreenshotListener;
 
 import org.openqa.selenium.*;
 
 import org.testng.*;
+
+
 
 
 /***
@@ -43,7 +46,7 @@ public class BaseTest  {
 	protected static String propertiesPath4 = TestConstants.OR_DIR + "/SignInOR.properties";
 	protected static String propertiesPath5 = TestConstants.OR_DIR + "/ZipcodeOR.properties";
 	protected static String propertiesPath6 = TestConstants.OR_DIR + "/ShopbyDepartmentOR.properties";
-
+	ScreenshotListener Screenshot =new ScreenshotListener();
 	@BeforeMethod
 	public void browserLaunch() throws Throwable {
 
@@ -118,19 +121,22 @@ public class BaseTest  {
 
 	}
 
+	
+
 	protected static WebDriver driver(final String suite) {
 		return BaseTest.driver;
 	}
 
 	@AfterMethod
 	public void firefoxBrowserClose(ITestResult testResult) throws Exception {
-
+ try {
 		propertiesPath1 = TestConstants.OR_DIR + "/AddtocartOR.properties";
 		propertiesPath2 = TestConstants.OR_DIR + "/LoginOR.properties";
 		propertiesPath3 = TestConstants.OR_DIR + "/RegistrationOR.properties";
 		propertiesPath4 = TestConstants.OR_DIR + "/SignInOR.properties";
 		propertiesPath5 = TestConstants.OR_DIR + "/ZipcodeOR.properties";
 		propertiesPath6 = TestConstants.OR_DIR + "/ShopbyDepartmentOR.properties";
+ }
 		// try {
 		//
 		// Actions move= new Actions(driver);
@@ -147,12 +153,16 @@ public class BaseTest  {
 		// } catch (Exception e) {
 		// Reporter.log("Passed:- Unable to LogOut Application");
 		// }
-		onTestFailure(testResult);
-		
+ catch (Exception exl)
+ {
+		Screenshot.onTestFailure(testResult);
+		exl.getMessage();
 		if (null != driver) {
 			driver.close();
 			driver.quit();
 		}
+ }
+ 
 	}
 
 	protected static void pause() throws InterruptedException {
@@ -162,23 +172,21 @@ public class BaseTest  {
 	public static String getValueFromData(final String key) {
 		return prop.getProperty(key);
 	}
-	 public void onTestFailure(ITestResult result) {
-		 
-		        Calendar calendar = Calendar.getInstance();
-		        SimpleDateFormat formater = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
-		        String methodName = result.getName();
-		        if(!result.isSuccess()){
-		            File scrFile = ((TakesScreenshot)BaseTest.driver).getScreenshotAs(OutputType.FILE);
-		            try {
-		                String reportDirectory = new File(System.getProperty("user.dir")).getAbsolutePath() + "/Errorscreenshot";
-		                File destFile = new File((String) reportDirectory+"/failure_screenshots/"+methodName+"_"+formater.format(calendar.getTime())+".png");
-		                FileUtils.copyFile(scrFile, destFile);
-		                System.out.println("Successfully captured a screenshot");
-		            } catch (IOException e) {
-		                e.printStackTrace();
-		            }
-		        }
-	    }
+	/*
+	 * public void onTestFailure(ITestResult result) {
+	 * 
+	 * Calendar calendar = Calendar.getInstance(); SimpleDateFormat formater = new
+	 * SimpleDateFormat("dd_MM_yyyy_hh_mm_ss"); String methodName =
+	 * result.getName(); if(!result.isSuccess()){ File scrFile =
+	 * ((TakesScreenshot)BaseTest.driver).getScreenshotAs(OutputType.FILE); try {
+	 * String reportDirectory = new
+	 * File(System.getProperty("user.dir")).getAbsolutePath() + "/Errorscreenshot";
+	 * File destFile = new File((String)
+	 * reportDirectory+"/failure_screenshots/"+methodName+"_"+formater.format(
+	 * calendar.getTime())+".png"); FileUtils.copyFile(scrFile, destFile);
+	 * System.out.println("Successfully captured a screenshot"); } catch
+	 * (IOException e) { e.printStackTrace(); } } }
+	 */
 	/*public static void screenShot(ITestResult testResult) throws IOException
 	{
 		if (testResult.getStatus() == ITestResult.FAILURE) {
