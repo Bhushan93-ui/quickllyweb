@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [QuickllyRegresionSuite]">
+  <test thread-count="5" name="SmokeTestSuite(failed)">
+    <classes>
+      <class name="com.quicklly.LoginTC.LoginTC">
+        <methods>
+          <include name="verifyLoginPageFunctionlity"/>
+          <include name="browserLaunch"/>
+          <include name="firefoxBrowserClose"/>
+        </methods>
+      </class> <!-- com.quicklly.LoginTC.LoginTC -->
+    </classes>
+  </test> <!-- SmokeTestSuite(failed) -->
+</suite> <!-- Failed suite [QuickllyRegresionSuite] -->
