@@ -5,6 +5,7 @@
     <classes>
       <class name="com.quicklly.LoginTC.LoginTC">
         <methods>
+          <include name="aftersuite"/>
           <include name="verifyLoginPageFunctionlity"/>
           <include name="browserLaunch"/>
           <include name="firefoxBrowserClose"/>

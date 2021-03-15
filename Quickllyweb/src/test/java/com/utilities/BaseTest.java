@@ -20,6 +20,8 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.TestListenerAdapter;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 
 import com.quicklly.ScreenshortListner.ScreenshotListener;
@@ -127,6 +129,7 @@ public class BaseTest  {
 		return BaseTest.driver;
 	}
 
+	
 	@AfterMethod
 	public void firefoxBrowserClose(ITestResult testResult) throws Exception {
  try {
@@ -136,7 +139,10 @@ public class BaseTest  {
 		propertiesPath4 = TestConstants.OR_DIR + "/SignInOR.properties";
 		propertiesPath5 = TestConstants.OR_DIR + "/ZipcodeOR.properties";
 		propertiesPath6 = TestConstants.OR_DIR + "/ShopbyDepartmentOR.properties";
+		Screenshot.onTestFailure(testResult); 
  }
+ 
+ 
 		// try {
 		//
 		// Actions move= new Actions(driver);
@@ -155,15 +161,23 @@ public class BaseTest  {
 		// }
  catch (Exception exl)
  {
-		Screenshot.onTestFailure(testResult);
-		exl.getMessage();
-		if (null != driver) {
-			driver.close();
-			driver.quit();
-		}
+	 Screenshot.onTestFailure(testResult); 
+		exl.getMessage();	
  }
- 
 	}
+ 
+ 
+	
+	
+	
+	@AfterSuite
+	 public void aftersuite() {
+		 if (null != driver) {
+				driver.close();
+				driver.quit();
+			}
+	}
+	 
 
 	protected static void pause() throws InterruptedException {
 		Thread.sleep(TestConstants.PAUSE_MILLIS);
@@ -172,21 +186,41 @@ public class BaseTest  {
 	public static String getValueFromData(final String key) {
 		return prop.getProperty(key);
 	}
-	/*
-	 * public void onTestFailure(ITestResult result) {
-	 * 
-	 * Calendar calendar = Calendar.getInstance(); SimpleDateFormat formater = new
-	 * SimpleDateFormat("dd_MM_yyyy_hh_mm_ss"); String methodName =
-	 * result.getName(); if(!result.isSuccess()){ File scrFile =
-	 * ((TakesScreenshot)BaseTest.driver).getScreenshotAs(OutputType.FILE); try {
-	 * String reportDirectory = new
-	 * File(System.getProperty("user.dir")).getAbsolutePath() + "/Errorscreenshot";
-	 * File destFile = new File((String)
-	 * reportDirectory+"/failure_screenshots/"+methodName+"_"+formater.format(
-	 * calendar.getTime())+".png"); FileUtils.copyFile(scrFile, destFile);
-	 * System.out.println("Successfully captured a screenshot"); } catch
-	 * (IOException e) { e.printStackTrace(); } } }
-	 */
+	
+	  public static void onTestFailure(ITestResult result) {
+	  
+	  Calendar calendar = Calendar.getInstance(); SimpleDateFormat formater = new
+	  SimpleDateFormat("dd_MM_yyyy_hh_mm_ss"); String methodName =
+	  result.getName(); if(!result.isSuccess()){ File scrFile =
+	  ((TakesScreenshot)BaseTest.driver).getScreenshotAs(OutputType.FILE); try {
+	  String reportDirectory = new
+	  File(System.getProperty("user.dir")).getAbsolutePath() + "/Errorscreenshot";
+	  File destFile = new File((String)
+	  reportDirectory+"/failure_screenshots/"+methodName+"_"+formater.format(
+	  calendar.getTime())+".png"); FileUtils.copyFile(scrFile, destFile);
+	  System.out.println("Successfully captured a screenshot"); } catch
+	  (IOException e) { e.printStackTrace(); } } }
+	  
+	  public static void onFailure(String suite) {
+		  
+		  Calendar calendar = Calendar.getInstance(); SimpleDateFormat formater = new
+		  SimpleDateFormat("dd_MM_yyyy_hh_mm_ss"); 
+		 // String methodName = result.getName(); 
+		//  if(!result.isSuccess())
+		//  { 
+			  File scrFile =
+		  ((TakesScreenshot)BaseTest.driver).getScreenshotAs(OutputType.FILE); try {
+		  String reportDirectory = new
+		  File(System.getProperty("user.dir")).getAbsolutePath() + "/Errorscreenshot";
+		  File destFile = new File((String)
+		  reportDirectory+"/failure_screenshots/"+suite+"_"+formater.format(
+		  calendar.getTime())+".png"); FileUtils.copyFile(scrFile, destFile);
+		  System.out.println("Successfully captured a screenshot"); } catch
+		  (IOException e) { e.printStackTrace();
+		//  }
+		  }
+	  }
+	 
 	/*public static void screenShot(ITestResult testResult) throws IOException
 	{
 		if (testResult.getStatus() == ITestResult.FAILURE) {

@@ -3,6 +3,7 @@ package com.quicklly.LoginPageObjects;
 import org.openqa.selenium.By;
 import org.testng.Reporter;
 
+import com.quicklly.ScreenshortListner.ScreenshotListener;
 import com.utilities.BaseTest;
 import com.utilities.Common_Methods;
 import com.utilities.Xls_Reader;
@@ -10,6 +11,8 @@ import com.utilities.Xls_Reader;
 public class Login extends BaseTest {
 
     private static String suite = "Login";
+    
+    public static ScreenshotListener screenshot= new ScreenshotListener();
     
     public static void NavigatetoSigninpopup(final String suite) throws Throwable {
     	
@@ -32,10 +35,8 @@ public class Login extends BaseTest {
     	
     
 
-    public static void SignIn(final String suite)
-        
-    
-            throws Throwable {
+    public static void SignIn(final String suite) throws Throwable
+    {
         try {
         	NavigatetoSigninpopup(suite);
 //        	driver(suite).findElement(By.id(getValueFromData("idzipcode"))).sendKeys("60611");
@@ -48,7 +49,7 @@ public class Login extends BaseTest {
                     System.getProperty("user.dir") + "\\config\\data.xlsx");
             // Don't change size it's dependent on other test cases
             for (int i = 2; i <= 2; i++) {
-                // Enter user name
+                // Enter user name 
                 driver(suite).findElement(By.id(getValueFromData("idUseremail")))
                         .sendKeys(x.getCellData("Sheet1", "newUsername", i));
                 Reporter.log("Passed:- Successfully enter 'User Name'");
@@ -61,10 +62,13 @@ public class Login extends BaseTest {
                 Reporter.log("Passed:- Successfully Clicked on 'Submit' Button");
                 
             }
-        } catch (Exception e) {
+            
+        }
+    catch (Exception exl) {
             Reporter.log("Failed:- Login Page is Not Found");
-            
-            
+            System.out.println("Failed");
+          
+        //onFailure(suite);
         }
     }
 
